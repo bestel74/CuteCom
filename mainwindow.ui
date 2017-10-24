@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
+    <width>538</width>
     <height>320</height>
    </rect>
   </property>
@@ -233,6 +233,9 @@
             <property name="shortcut">
              <string>Alt+X</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -287,8 +290,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>500</width>
-     <height>19</height>
+     <width>538</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSessions">

@@ -57,6 +57,8 @@ DataDisplay::DataDisplay(QWidget *parent)
     layout->addWidget(m_searchPanel);
     m_searchPanel->hide();
 
+    setDisplayHex(true);
+
     connect(m_searchPanel, &SearchPanel::findNext, this, &DataDisplay::find);
     connect(m_searchPanel, &SearchPanel::textEntered, m_highlighter, &DataHighlighter::setSearchString);
 }
@@ -396,6 +398,8 @@ bool DataDisplay::formatHexData(const QByteArray &inData)
     if (overflow) {
         data = m_hexLeftOver.append(inData);
         m_hexBytes -= overflow;
+        if (!m_data.isEmpty())
+            m_data.removeLast();
         redisplay = true;
     } else {
         data = inData;
@@ -411,19 +415,18 @@ bool DataDisplay::formatHexData(const QByteArray &inData)
         junkSize = junk.size();
         QString hexJunk = QString(junk.toHex());
         QString asciiText;
-        char *c = junk.data();
-        while (*c) {
-            unsigned int b = *c;
-            if (b < 0x20) {
-                b += 0x2400;
-            } else if (0x7F <= b) {
+        for (char c : junk) {
+            unsigned int b = c;
+            if (b <= 0x20) {
+                b = '.';
+            } else if (b >= 0x7F) {
                 b = '.';
             }
             asciiText += QChar(b);
-            ++c;
         }
         if (junkSize == 16)
             asciiText.append('\n');
+
         insertSpaces(hexJunk, 2);
         if (asciiText.size() > 8)
             asciiText.insert(8, QStringLiteral("  "));
